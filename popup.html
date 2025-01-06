@@ -1,0 +1,92 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Directory Tree Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="title">Directory Tree Generator</h1>
+
+    <div class="form-group">
+        <label>Sélectionner un dossier</label>
+        <input type="file" id="folderInput" webkitdirectory directory />
+    </div>
+
+    <div class="form-group">
+        <label>Patterns à ignorer</label>
+        <div class="patterns-group">
+            <div class="pattern-item">
+                <input type="radio" id="basic" name="pattern" value="basic" checked>
+                <label for="basic">
+                    <span class="radio-custom"></span>
+                    Basic (*.git, *.idea)
+                </label>
+            </div>
+
+            <div class="pattern-item">
+                <input type="radio" id="node" name="pattern" value="node">
+                <label for="node">
+                    <span class="radio-custom"></span>
+                    Node.js (node_modules, *.next)
+                </label>
+            </div>
+
+            <div class="pattern-item">
+                <input type="radio" id="python" name="pattern" value="python">
+                <label for="python">
+                    <span class="radio-custom"></span>
+                    Python (*.venv, __pycache__)
+                </label>
+            </div>
+
+            <div class="pattern-item">
+                <input type="radio" id="build" name="pattern" value="build">
+                <label for="build">
+                    <span class="radio-custom"></span>
+                    Build (build/, dist/)
+                </label>
+            </div>
+
+            <div class="pattern-item">
+                <input type="radio" id="all" name="pattern" value="all">
+                <label for="all">
+                    <span class="radio-custom"></span>
+                    Tous
+                </label>
+            </div>
+
+            <div class="pattern-item">
+                <input type="radio" id="custom" name="pattern" value="custom">
+                <label for="custom">
+                    <span class="radio-custom"></span>
+                    Personnalisé
+                </label>
+            </div>
+
+            <div class="custom-pattern">
+                <input type="text" id="customPatterns"
+                       placeholder="Entrez vos patterns personnalisés (séparés par des virgules)"
+                       disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="maxDepth">Profondeur maximale</label>
+        <input type="number" id="maxDepth" value="999" min="1" />
+    </div>
+
+    <div class="button-group">
+        <button id="generateBtn">Générer l'arborescence</button>
+        <button id="copyBtn" style="display: none;">Copier</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
