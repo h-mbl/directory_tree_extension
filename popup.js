@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Récupération des éléments du DOM
     const folderInput = document.getElementById('folderInput');
     const customPatternsInput = document.getElementById('customPatterns');
     const maxDepthInput = document.getElementById('maxDepth');
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copyBtn');
     const resultDiv = document.getElementById('result');
 
-    // Patterns prédéfinis
     const predefinedPatterns = {
         basic: ['*.git', '*.idea'],
         node: ['node_modules', '*.next'],
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         custom: []
     };
 
-    // Gestion du champ personnalisé
     document.querySelectorAll('input[name="pattern"]').forEach(radio => {
         radio.addEventListener('change', function() {
             customPatternsInput.disabled = this.value !== 'custom';
@@ -27,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Fonction pour vérifier si un fichier/dossier doit être ignoré
     function shouldIgnore(name, patterns) {
         return patterns.some(pattern => {
             const regexPattern = pattern
@@ -39,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Fonction pour récupérer les patterns sélectionnés
+
     function getSelectedPatterns() {
         const selectedPattern = document.querySelector('input[name="pattern"]:checked').value;
         if (selectedPattern === 'custom') {
@@ -48,12 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return predefinedPatterns[selectedPattern];
     }
 
-    // Fonction pour construire l'arborescence à partir des fichiers
+
     function buildTreeFromFiles(files, ignorePatterns, maxDepth) {
         const tree = new Map();
         const rootPath = files[0].webkitRelativePath.split('/')[0];
 
-        // Construire la structure de l'arbre
+
         for (const file of files) {
             const pathParts = file.webkitRelativePath.split('/');
             let currentLevel = tree;
@@ -62,18 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < pathParts.length; i++) {
                 const part = pathParts[i];
 
-                // Vérifier la profondeur maximale
+
                 if (currentDepth > maxDepth) break;
 
-                // Vérifier si le fichier/dossier doit être ignoré
                 if (shouldIgnore(part, ignorePatterns)) break;
 
                 if (!currentLevel.has(part)) {
                     if (i === pathParts.length - 1) {
-                        // C'est un fichier
                         currentLevel.set(part, null);
                     } else {
-                        // C'est un dossier
                         currentLevel.set(part, new Map());
                     }
                 }
@@ -85,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Fonction pour générer la représentation textuelle
         function generateTreeText(node, prefix = '', isLast = true) {
             let result = [];
             if (prefix) {
@@ -110,12 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return result;
         }
 
-        // Générer le texte de l'arborescence
         const rootEntry = [rootPath, tree.get(rootPath)];
         return generateTreeText(rootEntry).join('\n');
     }
 
-    // Gestionnaire du bouton de génération
     generateBtn.addEventListener('click', () => {
         if (!folderInput.files.length) {
             alert('Veuillez sélectionner un dossier');
@@ -148,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Gestionnaire du bouton de copie
     copyBtn.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(resultDiv.textContent);
